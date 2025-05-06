@@ -5,8 +5,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
+#include<stdbool.h>
 #define GUESS 7
-#define NAME 4
+#define NAME 10
 #define NUMBER 12
 #define FILE1 "mystery.txt"
 #define FILE2 "scoreboard.txt"
@@ -25,7 +26,7 @@ int main(){
 	int num = 0, i, length, stop;
 	char word[GUESS], guess1[GUESS], point1[GUESS], trans[GUESS][GUESS];
 	
-	//read(word);
+	read(word);
 	
 	//do{
 	//	length = guess(num, guess1);
@@ -163,11 +164,11 @@ void display(char trans[GUESS][GUESS], int num){
 
 void logic(int num, int stop){
 	if(num < 6){
-		if(num < 1){
+		if(num <= 1){
 			printf("       You won in %d guess!\n", num);
 			printf("            GOATED\n");
 		}
-		else if(num >= 1){
+		else if(num > 1){
 			printf("      You won in %d guesses!\n", num);
 			printf("            Amazing!\n");
 		}
@@ -184,26 +185,41 @@ void logic(int num, int stop){
 }
 
 void scoreboard(int num){
-	int i = 0, score[4], j;
-	char choice, name[4][NAME];
-	FILE *txt;
+	int i, j, score[5], x;
+	char choice, name[5][NAME];
+	bool a;
+	FILE *txt1;
 	
-	txt = fopen(FILE2, "r");
+	txt1 = fopen(FILE2, "r");
 	
-	if(txt == NULL){
+	if(txt1 == NULL){
 		printf("Could not open file\n");
 	}
 	
-	while(fscanf(txt, "%s %d", name[i], &score[i]) == 1){
+	while(fscanf(txt1, "%s%d", name[i], &score[i]) == 2){
 		i++;
 	}
-	fclose(txt);
+	fclose(txt1);
 	
-	printf("%d\n", i);
-	for(j = 0; j <= i; j++){
-		printf("%s %d", name[j], score[j]); 
-		printf("\n");
+	for(j = 0; j < i; j++){
+		if(num < score[j]){
+			a = true;
+			x++;
+		}
 	}
+	
+	if(a == true){
+		printf("You have made it onto the #%d spot on the scoreboard!\n", 6-x);
+	}
+	
 	printf("See scoreboard?\n");
-	scanf("%c", &choice);
+	scanf(" %c", &choice);
+	
+	if(choice == 'y' || choice == 'Y'){
+		
+		for(j = 0; j < i; j++){
+			printf("%s %d", name[j], score[j]); 
+			printf("\n");
+		}
+	}
 }
