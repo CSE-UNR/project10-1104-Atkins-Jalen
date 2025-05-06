@@ -6,8 +6,10 @@
 #include<stdlib.h>
 #include<time.h>
 #define GUESS 7
+#define NAME 4
 #define NUMBER 12
 #define FILE1 "mystery.txt"
+#define FILE2 "scoreboard.txt"
 
 void read(char word[GUESS]);
 int guess(int num, char guess1[GUESS]);
@@ -17,7 +19,34 @@ void search(char word[GUESS], char guess1[GUESS], int* stop);
 void point(char word[GUESS], char guess1[GUESS], char point1[GUESS]);
 void transcribe(char point1[GUESS], char word[GUESS], char guess1[GUESS], char trans[GUESS][GUESS], int num);
 void logic(int num, int stop);
-void scoreboard();
+void scoreboard(int num);
+	
+int main(){
+	int num = 0, i, length, stop;
+	char word[GUESS], guess1[GUESS], point1[GUESS], trans[GUESS][GUESS];
+	
+	//read(word);
+	
+	//do{
+	//	length = guess(num, guess1);
+	//	gcheck(length, guess1);
+		
+	//	search(word, guess1, &stop);
+		
+	//	if(stop < 5){
+	//		point(word, guess1, point1);
+	//		transcribe(point1, word, guess1, trans, num);
+	//		display(trans, num);
+	//	}
+	//	num++;
+	//}while(num <= 5 && stop < 5);
+	
+	//logic(num, stop);
+	
+	scoreboard(num);
+	
+	return 0;
+}
 
 void read(char word[GUESS]){
 	FILE *txt;
@@ -154,35 +183,27 @@ void logic(int num, int stop){
 	}
 }
 
-void scoreboard(){
-
-}
+void scoreboard(int num){
+	int i = 0, score[4], j;
+	char choice, name[4][NAME];
+	FILE *txt;
 	
-int main(){
-	int num = 0, i, length, stop;
-	char word[GUESS], guess1[GUESS], point1[GUESS], trans[GUESS][GUESS];
+	txt = fopen(FILE2, "r");
 	
-	read(word);
+	if(txt == NULL){
+		printf("Could not open file\n");
+	}
 	
-	do{
-		length = guess(num, guess1);
-		gcheck(length, guess1);
-		
-		search(word, guess1, &stop);
-		
-		if(stop < 5){
-			point(word, guess1, point1);
-			transcribe(point1, word, guess1, trans, num);
-			display(trans, num);
-		}
-		num++;
-	}while(num <= 5 && stop < 5);
+	while(fscanf(txt, "%s %d", name[i], &score[i]) == 1){
+		i++;
+	}
+	fclose(txt);
 	
-	logic(num, stop);
-	
+	printf("%d\n", i);
+	for(j = 0; j <= i; j++){
+		printf("%s %d", name[j], score[j]); 
+		printf("\n");
+	}
 	printf("See scoreboard?\n");
-	
-	scoreboard();
-	
-	return 0;
+	scanf("%c", &choice);
 }

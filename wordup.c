@@ -16,6 +16,31 @@ void search(char word[GUESS], char guess1[GUESS], int* stop);
 void point(char word[GUESS], char guess1[GUESS], char point1[GUESS]);
 void transcribe(char point1[GUESS], char word[GUESS], char guess1[GUESS], char trans[GUESS][GUESS], int num);
 void logic(int num, int stop);
+	
+int main(){
+	int num = 0, i, length, stop;
+	char word[GUESS], guess1[GUESS], point1[GUESS], trans[GUESS][GUESS];
+	
+	read(word);
+	
+	do{
+		length = guess(num, guess1);
+		gcheck(length, guess1);
+		
+		search(word, guess1, &stop);
+		
+		if(stop < 5){
+			point(word, guess1, point1);
+			transcribe(point1, word, guess1, trans, num);
+			display(trans, num);
+		}
+		num++;
+	}while(num <= 5 && stop < 5);
+	
+	logic(num, stop);
+	
+	return 0;
+}
 
 void read(char word[GUESS]){
 	FILE *txt;
@@ -140,28 +165,4 @@ void logic(int num, int stop){
 		}
 	}
 }
-	
-int main(){
-	int num = 0, i, length, stop;
-	char word[GUESS], guess1[GUESS], point1[GUESS], trans[GUESS][GUESS];
-	
-	read(word);
-	
-	do{
-		length = guess(num, guess1);
-		gcheck(length, guess1);
-		
-		search(word, guess1, &stop);
-		
-		if(stop < 5){
-			point(word, guess1, point1);
-			transcribe(point1, word, guess1, trans, num);
-			display(trans, num);
-		}
-		num++;
-	}while(num <= 5 && stop < 5);
-	
-	logic(num, stop);
-	
-	return 0;
-}
+
