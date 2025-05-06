@@ -28,21 +28,21 @@ int main(){
 	
 	read(word);
 	
-	//do{
-	//	length = guess(num, guess1);
-	//	gcheck(length, guess1);
+	do{
+		length = guess(num, guess1);
+		gcheck(length, guess1);
 		
-	//	search(word, guess1, &stop);
+		search(word, guess1, &stop);
 		
-	//	if(stop < 5){
-	//		point(word, guess1, point1);
-	//		transcribe(point1, word, guess1, trans, num);
-	//		display(trans, num);
-	//	}
-	//	num++;
-	//}while(num <= 5 && stop < 5);
+		if(stop < 5){
+			point(word, guess1, point1);
+			transcribe(point1, word, guess1, trans, num);
+			display(trans, num);
+		}
+		num++;
+	}while(num <= 5 && stop < 5);
 	
-	//logic(num, stop);
+	logic(num, stop);
 	
 	scoreboard(num);
 	
@@ -51,7 +51,7 @@ int main(){
 
 void read(char word[GUESS]){
 	FILE *txt;
-	int max, min = 0, random, i;
+	int max = 0, min = 0, random, i;
 	char word1[GUESS][GUESS];
 	
 	txt = fopen(FILE1, "r");
@@ -65,7 +65,9 @@ void read(char word[GUESS]){
 		max++;
 	}
 	
+	max = max-1;
 	fclose(txt);
+	fflush(stdout);
 	
 	random = (rand() % (max - min + 1)) + min;
 	
@@ -185,17 +187,17 @@ void logic(int num, int stop){
 }
 
 void scoreboard(int num){
-	int i, j, score[5], x;
+	int i = 0, j, score[5], x = 0, y;
 	char choice, name[5][NAME];
 	bool a;
-	FILE *txt1;
+	FILE *txt1, *txt2;
 	
 	txt1 = fopen(FILE2, "r");
 	
 	if(txt1 == NULL){
 		printf("Could not open file\n");
 	}
-	
+
 	while(fscanf(txt1, "%s%d", name[i], &score[i]) == 2){
 		i++;
 	}
@@ -210,16 +212,27 @@ void scoreboard(int num){
 	
 	if(a == true){
 		printf("You have made it onto the #%d spot on the scoreboard!\n", 6-x);
+		printf("What's your name?\n");
+		scanf("%s", name[5-x]);
+		score[5-x] = num;
 	}
 	
 	printf("See scoreboard?\n");
 	scanf(" %c", &choice);
 	
 	if(choice == 'y' || choice == 'Y'){
-		
 		for(j = 0; j < i; j++){
 			printf("%s %d", name[j], score[j]); 
 			printf("\n");
 		}
 	}
+		
+	txt2 = fopen(FILE2, "w");
+	if(txt1 == NULL){
+		printf("Could not open file\n");
+	}
+	for(j = 0; j < i; j++){
+			fprintf(txt2, "%s %d\n", name[j], score[j]);
+	}
+	fclose(txt2);
 }
